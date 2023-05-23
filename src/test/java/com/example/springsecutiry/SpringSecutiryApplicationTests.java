@@ -1,6 +1,7 @@
 package com.example.springsecutiry;
 
 import com.example.springsecutiry.entity.User;
+import com.example.springsecutiry.mapper.MenuMapper;
 import com.example.springsecutiry.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,13 @@ class SpringSecutiryApplicationTests {
         String encode = bCryptPasswordEncoder.encode("1234");
         System.out.println(encode);
         System.out.println(encode1);*/
+    }
+    @Autowired
+    private MenuMapper menuMapper;
+    @Test
+    public void testSelectPermsByUserid(){
+        List<String> strings = menuMapper.selectPermsByUserid(2L);
+        System.out.println(strings);
     }
         @Test
     void contextLoads() {

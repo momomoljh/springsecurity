@@ -1,6 +1,7 @@
 package com.example.springsecutiry.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.example.springsecutiry.entity.LoginUser;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -41,14 +42,15 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         //从redis中获取用户信息
         String redisKey ="login:"+userid;
-        String loginUser = stringRedisTemplate.opsForValue().get(redisKey);
-        if(loginUser==null){
+        String loginUser =  stringRedisTemplate.opsForValue().get(redisKey);
+        LoginUser user = JSON.parseObject(loginUser, LoginUser.class);
+        if(Objects.isNull(user)){
             throw new RuntimeException("用户未登录");
         }
         //存入SecurityContextHolder
-        // TODO 获取权限信息封装到authentication
+        //  获取权限信息封装到authentication
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginUser,null,null);
+                new UsernamePasswordAuthenticationToken(loginUser,null,user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         //放行
         filterChain.doFilter(request,response);
