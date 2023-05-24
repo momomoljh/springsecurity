@@ -42,13 +42,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/user/login").anonymous()
-                .antMatchers("/hello").hasAnyRole("CESHI")
+                .antMatchers("/hello").hasAuthority("system:dept:list")
                 .anyRequest().anonymous();
         //添加过滤器
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
         //配置异常处理器
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler);
+        //允许跨域
+        http.cors();
     }
 
     @Override
