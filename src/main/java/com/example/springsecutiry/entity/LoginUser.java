@@ -19,6 +19,10 @@ public class LoginUser implements UserDetails {
     private User user;
     private List<String> permission;
 
+    public LoginUser(User user) {
+        this.user = user;
+    }
+
     public LoginUser(User user, List<String> permission) {
         this.user = user;
         this.permission = permission;
@@ -26,7 +30,6 @@ public class LoginUser implements UserDetails {
     @JSONField(serialize = false)
     private List<SimpleGrantedAuthority> authorities;
     @Override
-    @JSONField(serialize = false)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(authorities!=null){
             return authorities;

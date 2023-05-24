@@ -42,8 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/user/login").anonymous()
-                .antMatchers("/hello").hasAuthority("system:dept:list")
-                .anyRequest().anonymous();
+                .anyRequest().authenticated();
         //添加过滤器
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
         //配置异常处理器
